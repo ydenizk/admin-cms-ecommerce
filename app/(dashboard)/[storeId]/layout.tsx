@@ -30,8 +30,10 @@ const DashboardLayout = async ({
 
   return (
     <>
-      <Navbar />
-      {children}
+      <div className="flex">
+        <Navbar />
+        <div>{children}</div>
+      </div>
     </>
   );
 };

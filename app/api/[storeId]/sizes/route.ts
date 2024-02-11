@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, value } = body;
+    const { name, value,categoryId} = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -45,6 +45,7 @@ export async function POST(
       data: {
         name,
         value,
+        categoryId,
         storeId: params.storeId
       }
     });
@@ -61,13 +62,21 @@ export async function GET(
   { params }: { params: { storeId: string } }
 ) {
   try {
+
+    const { searchParams } = new URL(req.url)
+    const categoryId = searchParams.get('categoryId') || undefined;
+
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
 
     const sizes = await prismadb.size.findMany({
       where: {
-        storeId: params.storeId
+        storeId: params.storeId,
+        categoryId,
+      },
+      include:{
+        category:true
       }
     });
   

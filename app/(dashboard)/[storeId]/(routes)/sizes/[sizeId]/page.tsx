@@ -5,7 +5,7 @@ import { SizeForm } from "./components/size-form";
 const SizePage = async ({
   params
 }: {
-  params: { sizeId: string }
+  params: { sizeId: string,storeId:string }
 }) => {
   const size = await prismadb.size.findUnique({
     where: {
@@ -13,10 +13,16 @@ const SizePage = async ({
     }
   });
 
+  const categories = await prismadb.category.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
+
   return ( 
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <SizeForm initialData={size} />
+        <SizeForm initialData={size} categories={categories} />
       </div>
     </div>
   );

@@ -14,15 +14,19 @@ const SizesPage = async ({
     where: {
       storeId: params.storeId
     },
-    orderBy: {
-      createdAt: 'desc'
+    include:{
+      category:true
     }
+  /*   orderBy: {
+      createdAt: 'desc'
+    } */
   });
 
   const formattedSizes: SizeColumn[] = sizes.map((item) => ({
     id: item.id,
     name: item.name,
     value: item.value,
+    category:item.category?.name || 'No Category',
     createdAt: format(item.createdAt, 'MMMM do, yyyy'),
   }));
 

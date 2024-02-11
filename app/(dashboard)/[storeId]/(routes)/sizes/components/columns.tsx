@@ -8,6 +8,7 @@ export type SizeColumn = {
   id: string
   name: string;
   value: string;
+  category:string,
   createdAt: string;
 }
 
@@ -19,6 +20,10 @@ export const columns: ColumnDef<SizeColumn>[] = [
   {
     accessorKey: "value",
     header: "Value",
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
   },
   {
     accessorKey: "createdAt",

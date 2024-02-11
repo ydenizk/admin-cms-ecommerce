@@ -15,7 +15,8 @@ export async function GET(
     const size = await prismadb.size.findUnique({
       where: {
         id: params.sizeId
-      }
+      },
+      include:{category:true}
     });
   
     return NextResponse.json(size);
@@ -74,7 +75,7 @@ export async function PATCH(
 
     const body = await req.json();
 
-    const { name, value } = body;
+    const { name, value,categoryId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -110,7 +111,8 @@ export async function PATCH(
       },
       data: {
         name,
-        value
+        value,
+        categoryId
       }
     });
   

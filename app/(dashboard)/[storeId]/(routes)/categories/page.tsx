@@ -16,6 +16,7 @@ const CategoriesPage = async ({
     },
     include: {
       billboard: true,
+    
     },
     orderBy: {
       createdAt: 'desc'
