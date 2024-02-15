@@ -32,7 +32,8 @@ export async function POST(
     }
   });
 
-  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  
+/*   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
   products.forEach((product) => {
     line_items.push({
@@ -45,7 +46,39 @@ export async function POST(
         unit_amount: product.price.toNumber() * 100
       }
     });
+  }); */
+  let totalAmount = 0;
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = products.map((product) => {
+    const amount = product.price.toNumber() * 100; // Assuming price is in dollars and needs to be converted to cents
+    totalAmount += amount;
+    return {
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: amount,
+      },
+    };
   });
+
+  // Calculate delivery cost if totalAmount > 200 USD (in cents)
+  const deliveryCost = totalAmount > 20000 ? totalAmount * 0.1 : 0; // 10% delivery cost
+
+  if (deliveryCost > 0) {
+    line_items.push({
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: 'Delivery Cost',
+        },
+        unit_amount: Math.round(deliveryCost),
+      },
+    });
+  }
+
 
   const order = await prismadb.order.create({
     data: {
