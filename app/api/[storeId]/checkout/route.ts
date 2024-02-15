@@ -64,7 +64,7 @@ export async function POST(
   });
 
   // Calculate delivery cost if totalAmount > 200 USD (in cents)
-  const deliveryCost = totalAmount > 20000 ? totalAmount * 0.1 : 0; // 10% delivery cost
+  const deliveryCost = totalAmount > 20000 ? totalAmount * 0.15 : 0; // 10% delivery cost
 
   if (deliveryCost > 0) {
     line_items.push({
